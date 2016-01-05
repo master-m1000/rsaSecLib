@@ -23,7 +23,7 @@ Public Class rsaSecLib
     ''' </summary>
     ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
     ''' <returns></returns>
-    Public Function CreateKeyPair(ByVal keysize As Integer) As KeyPair
+    Shared Function CreateKeyPair(ByVal keysize As Integer) As KeyPair
         Dim rsaKey As New KeyPair 'Declare return value
         Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service and generate random key pair
         rsaKey.publicKey = rsaCryptoProvider.ToXmlString(False) 'Public key to XML
@@ -38,7 +38,7 @@ Public Class rsaSecLib
     ''' <param name="privateKeyXml"></param>
     ''' <param name="keysize"></param>
     ''' <returns></returns>
-    Public Function GeneratePublicKeyWithPrivateKey(ByVal privateKeyXml As String, ByVal keysize As Integer) As String
+    Shared Function GeneratePublicKeyWithPrivateKey(ByVal privateKeyXml As String, ByVal keysize As Integer) As String
         Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
         Dim publicKey As String 'Declare return value
         rsaCryptoProvider.FromXmlString(privateKeyXml) 'RSA service receives private key
@@ -53,7 +53,7 @@ Public Class rsaSecLib
     ''' <param name="publicKeyXml">Public key as XML</param>
     ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
     ''' <returns>Encrypted String</returns>
-    Public Function EncryptString(ByVal DATA As String, ByVal publicKeyXml As String, ByVal keysize As Integer) As String
+    Shared Function EncryptString(ByVal DATA As String, ByVal publicKeyXml As String, ByVal keysize As Integer) As String
         Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
         Dim byteData As Byte() = Encoding.UTF8.GetBytes(DATA)  'Write data string into a Byte Array
         Dim encryptedString As String = String.Empty 'Declare return value
@@ -70,7 +70,7 @@ Public Class rsaSecLib
     ''' <param name="privateKeyXml">Private key as XML</param>
     ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
     ''' <returns>Decrypted String</returns>
-    Public Function DecryptString(ByVal DATA As String, ByVal privateKeyXml As String, ByVal keysize As Integer) As String
+    Shared Function DecryptString(ByVal DATA As String, ByVal privateKeyXml As String, ByVal keysize As Integer) As String
         Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
         Dim byteData As Byte() = Convert.FromBase64String(DATA) 'Write data Base64 string into a Byte Array
         Dim decryptedString As String = String.Empty 'Declare return value
@@ -87,7 +87,7 @@ Public Class rsaSecLib
     ''' <param name="publicKeyXml">Public key as XML</param>
     ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
     ''' <returns>Encrypted Byte Array</returns>
-    Public Function EncryptByte(ByVal DATA As Byte(), ByVal publicKeyXml As String, ByVal keysize As Integer) As Byte()
+    Shared Function EncryptByte(ByVal DATA As Byte(), ByVal publicKeyXml As String, ByVal keysize As Integer) As Byte()
         Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
         Dim encryptedDATA As Byte() = {0} 'Declare return value
         rsaCryptoProvider.FromXmlString(publicKeyXml) 'RSA service receives public key
@@ -103,7 +103,7 @@ Public Class rsaSecLib
     ''' <param name="privateKeyXml">Private key as XML</param>
     ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
     ''' <returns>Decrypted Byte Array</returns>
-    Public Function DecryptByte(ByVal DATA As Byte(), ByVal privateKeyXml As String, ByVal keysize As Integer) As Byte()
+    Shared Function DecryptByte(ByVal DATA As Byte(), ByVal privateKeyXml As String, ByVal keysize As Integer) As Byte()
         Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
         Dim decryptedDATA As Byte() = {0} 'Declare return value
         rsaCryptoProvider.FromXmlString(privateKeyXml) 'RSA service receives private key
