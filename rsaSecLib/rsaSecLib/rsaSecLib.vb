@@ -111,4 +111,44 @@ Public Class rsaSecLib
         rsaCryptoProvider.Dispose() 'Deallocate ressources
         Return decryptedDATA
     End Function
+
+    ''' <summary>
+    ''' Signs a Stream.
+    ''' </summary>
+    ''' <param name="stream">Stream to sign</param>
+    ''' <param name="privateKeyXml">Private key as XML</param>
+    ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
+    ''' <returns>Signature</returns>
+    Shared Function SignData(stream As IO.Stream, ByVal privateKeyXml As String, ByVal keysize As Integer) As Byte()
+        Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
+        Dim signature As Byte() = {0} 'Declare return value
+        rsaCryptoProvider.FromXmlString(privateKeyXml) 'RSA service receives private key
+        signature = rsaCryptoProvider.SignData(stream, GetType(SHA512)) 'Generate signature
+        Return signature
+    End Function
+
+    ''' <summary>
+    ''' Verifies a Byte Array with a signature.
+    ''' </summary>
+    ''' <param name="DATA">Byte Array to verify</param>
+    ''' <param name="signature">The signature</param>
+    ''' <param name="publicKeyXml">Public key as XML</param>
+    ''' <param name="keysize">Key size as a power of 2, e.g. 2048 or 4096</param>
+    ''' <returns></returns>
+    Shared Function VerifyData(ByVal DATA As Byte(), signature As Byte(), ByVal publicKeyXml As String, ByVal keysize As Integer) As Boolean
+        Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
+        Dim verified As Boolean = False 'Declare return value
+        rsaCryptoProvider.FromXmlString(publicKeyXml) 'RSA service receives private key
+        verified = rsaCryptoProvider.VerifyData(DATA, GetType(SHA512), signature) 'Generate signature
+        Return verified
+    End Function
+
+    Shared Function Sign(ByVal DATA As Byte(), ByVal privateKeyXml As String, ByVal keysize As Integer) As Byte()
+        Dim rsaCryptoProvider As New RSACryptoServiceProvider(keysize) 'Declare RSA service
+        Dim DATAToSign As Byte() = {0} 'Declare return value
+        rsaCryptoProvider.FromXmlString(privateKeyXml) 'RSA service receives private key
+
+
+        Return DATAToSign
+    End Function
 End Class
